@@ -11,23 +11,36 @@ import es.upm.fi.sos.upmbank.UPMBankWSStub.*;
 public class UPMBank {
 	
 	private static UPMBankWSStub stub;
-	private static Login login;
+	static Login login;
+	private static UPMBankWSCallbackHandler callback;
 	
 	private static void login(String username, String password){
-		try {
+		try { 
 			stub = new UPMBankWSStub();//Cada operacion login creara un nuevo cliente
 			login = new Login();
 			
+			stub._getServiceClient().engageModule("addressing");
 			stub._getServiceClient().getOptions().setManageSession(true);
-
+			//stub._getServiceClient().getOptions().setUseSeparateListener(true);
+			
+			
 			
 			UPMBankWSStub.User user = new UPMBankWSStub.User();
 			user.setName(username);
 			user.setPwd(password);
 			
+			
+			
 			login.setArgs0(user);
 			
 			System.out.println("User: "+username+" Password: "+password);
+			
+			
+			
+			//stub.startlogin(login, callback);
+			
+			
+			
 			Boolean response = stub.login(login).get_return().getResponse();
 			System.out.println("Response received");
 			
@@ -37,6 +50,7 @@ public class UPMBank {
 				System.out.println("La conexion a fallado, intentalo de nuevo");
 				login = null;
 			}
+			
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			System.out.println("Axis Error in Login");
@@ -49,6 +63,7 @@ public class UPMBank {
 			e.printStackTrace();
 		}
 	}
+	
 
 	private static void addUser(String name){
 		try{
@@ -57,6 +72,10 @@ public class UPMBank {
 			
 			username.setUsername(name);
 			user.setArgs0(username);
+			
+			//stub.startaddUser(user, callback);
+			
+			
 			
 			AddUserResponseE response = stub.addUser(user);
 			System.out.println("Response: "+response.toString());
@@ -68,7 +87,7 @@ public class UPMBank {
 			}else{
 				//Add User didn't work
 				System.out.println("La creacion del user no funciono");
-			}
+			} 
 		} catch (RemoteException e){
 			System.out.println("RemoteExeption in AddUser");
 			e.printStackTrace();
@@ -96,6 +115,7 @@ public class UPMBank {
 			Username user = new Username();;
 			
 			user.setUsername(username);
+			
 			removeUser.setArgs0(user);
 			
 			RemoveUserResponse response = stub.removeUser(removeUser);
@@ -111,7 +131,7 @@ public class UPMBank {
 
 				}
 			}else{
-				System.out.println("Error de formato en la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 		} catch(RemoteException e){
 			System.out.println("RemoteException in removeUser");
@@ -140,7 +160,7 @@ public class UPMBank {
 					System.out.println("Error en el cambio de la contrasena");
 				}
 			}else{
-				System.out.println("Problema en el formato de la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 		} catch(RemoteException e){
 			System.out.println("RemoteException in changePassword");
@@ -168,7 +188,7 @@ public class UPMBank {
 					System.out.println("Error en la creacion de la cuenta");
 				}
 			}else{
-				System.out.println("probleme en el formato de la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 
 		} catch(RemoteException e){
@@ -197,7 +217,7 @@ public class UPMBank {
 					System.out.println("Error al borrar la cuenta");
 				}
 			}else{
-				System.out.println("Problema en el formato de la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 		} catch(RemoteException e){
 			System.out.println("RemoteException in closeBankAcc");
@@ -211,6 +231,7 @@ public class UPMBank {
 			Movement movement = new Movement();
 
 			movement.setQuantity(income);
+			movement.setIBAN(IBAN);
 			addIncome.setArgs0(movement);
 
 			AddIncomeResponse response = stub.addIncome(addIncome);
@@ -225,7 +246,7 @@ public class UPMBank {
 					System.out.println("Error al ingresar dinero a la cuenta");
 				}
 			}else{
-				System.out.println("Problema en el formato de la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 		} catch(RemoteException e){
 			System.out.println("RemoteException in addIncome");
@@ -239,21 +260,22 @@ public class UPMBank {
 			Movement movement = new Movement();
 
 			movement.setQuantity(withdraw);
+			movement.setIBAN(IBAN);
 			withdrawal.setArgs0(movement);
 
 			AddWithdrawalResponse response = stub.addWithdrawal(withdrawal);
 
-			if(response.is_returnSpecified() & response.get_return().isResultSpecified() & response.get_return().isBalanceSpecified()){
+			if(response.is_returnSpecified() & response.get_return().isResultSpecified()){
 				System.out.println("Response: "+response.toString()+"\n Object Response: "+response.get_return().toString());
-				if(response.get_return().getResult()){
+				if(response.get_return().getResult() & response.get_return().isBalanceSpecified()){
 					System.out.println("Retirada contabilizada");
 					System.out.println("La cuenta"+IBAN+" tiene un balance de: "+response.get_return().getBalance());
 				}else{
-					//Account wasn't create
+					//Withdraw fail
 					System.out.println("Error al retirar dinero de la cuenta: "+IBAN);
 				}
 			}else{
-				System.out.println("Problema en el formato de la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 		} catch(RemoteException e){
 			System.out.println("RemoteException in addWithdrawal");
@@ -285,7 +307,7 @@ public class UPMBank {
 					System.out.println("Error al recuperar los movimientos");
 				}
 			}else{
-				System.out.println("Problema en el formato de la respuesta");
+				System.out.println("No se ha podido resolver la operacion deseada");
 			}
 		} catch(RemoteException e){
 			System.out.println("RemoteException in getMyMovement");
@@ -319,6 +341,7 @@ public class UPMBank {
 						
 						break;
 					case 2: 
+						System.out.println("Fin");
 						return;
 					default: 
 						System.out.println("No coresponde a ninguna operacion");	

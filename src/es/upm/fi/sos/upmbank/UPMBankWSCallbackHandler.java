@@ -117,6 +117,19 @@
            public void receiveResultaddUser(
                     es.upm.fi.sos.upmbank.UPMBankWSStub.AddUserResponseE result
                         ) {
+        	   
+        	  
+        	   es.upm.fi.sos.upmbank.UPMBankWSStub.AddUserResponseE response = result;
+   			System.out.println("Response: "+response.toString());
+   			
+   			if(response.get_return().getResponse()){
+   				//Add User works
+   				System.out.println("Creacion del nuevo User echa");
+   				System.out.println("Username: "+ UPMBank.login.getArgs0().localName+"\nPassword: "+response.get_return().getPwd());
+   			}else{
+   				//Add User didn't work
+   				System.out.println("La creacion del user no funciono");
+   			}
            }
 
           /**
@@ -149,6 +162,15 @@
            public void receiveResultlogin(
                     es.upm.fi.sos.upmbank.UPMBankWSStub.LoginResponse result
                         ) {
+        	   Boolean response = result.get_return().getResponse();
+   			System.out.println("Response received");
+   			
+   			if(response){
+   				System.out.println("Connexion conseguida");
+   			}else{
+   				System.out.println("La conexion a fallado, intentalo de nuevo");
+   				UPMBank.login = null;
+   			}
            }
 
           /**
