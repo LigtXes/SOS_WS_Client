@@ -142,8 +142,154 @@ public class UPMBank {
 			}else{
 				System.out.println("Problema en el formato de la respuesta");
 			}
-		} catch (RemoteException e){
-			
+		} catch(RemoteException e){
+			System.out.println("RemoteException in changePassword");
+			e.printStackTrace();
+		}
+	}
+
+	private static void addBankAcc(double quantity){
+		try{
+			AddBankAcc bankAcc = new AddBankAcc();
+			Deposit deposit = new Deposit();
+
+			deposit.setQuantity(quantity);
+			bankAcc.setArgs0(deposit);
+
+			AddBankAccResponse response = stub.addBankAcc(bankAcc);
+
+			if(response.is_returnSpecified() & response.get_return().isResultSpecified() & response.get_return().isIBANSpecified()){
+				System.out.println("Response: "+response.toString()+"\n Object Response: "+response.get_return().toString());
+				if(response.get_return().getResult()){
+					System.out.println("Cuenta creada");
+					System.out.println("El IBAN de la cuenta es:"+response.get_return().getIBAN());
+				}else{
+					//Account wasn't create
+					System.out.println("Error en la creacion de la cuenta");
+				}
+			}else{
+				System.out.println("probleme en el formato de la respuesta");
+			}
+
+		} catch(RemoteException e){
+			System.out.println("RemoteException in addBankAccount");
+			e.printStackTrace();
+		}
+	}
+
+	private static void closeBankAcc(String IBAN){
+		try{
+			CloseBankAcc bankAcc = new CloseBankAcc();
+			BankAccount account = new BankAccount();
+
+			account.setIBAN(IBAN);
+			bankAcc.setArgs0(account);
+
+			CloseBankAccResponse response = stub.closeBankAcc(bankAcc);
+
+			if(response.is_returnSpecified() & response.get_return().isResponseSpecified()){
+				System.out.println("Response: "+response.toString()+"\n Object Response: "+response.get_return().toString());
+				if(response.get_return().getResponse()){
+					System.out.println("Cuenta borrada");
+					System.out.println("La cuenta"+IBAN+" ha sido borrada: "+response.get_return().getResponse());
+				}else{
+					//Account wasn't create
+					System.out.println("Error al borrar la cuenta");
+				}
+			}else{
+				System.out.println("Problema en el formato de la respuesta");
+			}
+		} catch(RemoteException e){
+			System.out.println("RemoteException in closeBankAcc");
+			e.printStackTrace();
+		}
+	}
+
+	private static void addIncome(String IBAN, double income){
+		try{
+			AddIncome addIncome = new AddIncome();
+			Movement movement = new Movement();
+
+			movement.setQuantity(income);
+			addIncome.setArgs0(movement);
+
+			AddIncomeResponse response = stub.addIncome(addIncome);
+
+			if(response.is_returnSpecified() & response.get_return().isResultSpecified() & response.get_return().isBalanceSpecified()){
+				System.out.println("Response: "+response.toString()+"\n Object Response: "+response.get_return().toString());
+				if(response.get_return().getResult()){
+					System.out.println("Ingreso anadido");
+					System.out.println("La cuenta"+IBAN+" tiene un balance de: "+response.get_return().getBalance());
+				}else{
+					//Account wasn't create
+					System.out.println("Error al ingresar dinero a la cuenta");
+				}
+			}else{
+				System.out.println("Problema en el formato de la respuesta");
+			}
+		} catch(RemoteException e){
+			System.out.println("RemoteException in addIncome");
+			e.printStackTrace();
+		}
+	}
+
+	private static void addWithdraw(String IBAN, double withdraw){
+		try{
+			AddWithdrawal withdrawal = new AddWithdrawal();
+			Movement movement = new Movement();
+
+			movement.setQuantity(withdraw);
+			withdrawal.setArgs0(movement);
+
+			AddWithdrawalResponse response = stub.addWithdrawal(withdrawal);
+
+			if(response.is_returnSpecified() & response.get_return().isResultSpecified() & response.get_return().isBalanceSpecified()){
+				System.out.println("Response: "+response.toString()+"\n Object Response: "+response.get_return().toString());
+				if(response.get_return().getResult()){
+					System.out.println("Retirada contabilizada");
+					System.out.println("La cuenta"+IBAN+" tiene un balance de: "+response.get_return().getBalance());
+				}else{
+					//Account wasn't create
+					System.out.println("Error al retirar dinero de la cuenta: "+IBAN);
+				}
+			}else{
+				System.out.println("Problema en el formato de la respuesta");
+			}
+		} catch(RemoteException e){
+			System.out.println("RemoteException in addWithdrawal");
+			e.printStackTrace();
+		}
+	}
+
+	public static void getMyMovement(){
+		try{
+			GetMyMovements movements = new GetMyMovements();
+
+
+			GetMyMovementsResponse response = stub.getMyMovements(movements);
+
+			if(response.is_returnSpecified() & response.get_return().isResultSpecified() & response.get_return().isMovementQuantitiesSpecified()){
+				System.out.println("Response: "+response.toString()+"\n Object Response: "+response.get_return().toString());
+				if(response.get_return().getResult()){
+					System.out.println("Movimientos bancarios");
+					double[] res = response.get_return().getMovementQuantities();
+					int i = 1;
+					System.out.println("1 siendo el mas antiguo y 10 el mas recien -> ");
+					System.out.println(" --------------------- ");
+					for(Double d: res){
+						System.out.println("Numero "+i+": "+d);
+						i++;
+					}
+				}else{
+					//Account wasn't create
+					System.out.println("Error al recuperar los movimientos");
+				}
+			}else{
+				System.out.println("Problema en el formato de la respuesta");
+			}
+		} catch(RemoteException e){
+			System.out.println("RemoteException in getMyMovement");
+			e.printStackTrace();
 		}
 	}
 	
@@ -180,14 +326,14 @@ public class UPMBank {
 
 			}else{
 				System.out.println("Operaciones disponibles");
-				System.out.println("1: Anadir un usuario");
+				System.out.println("1: Añadir un usuario");
 				System.out.println("2: Borrar usuario");
 				System.out.println("3: Modificar contrasena");
-				System.out.println("4: ");
-				System.out.println("5: ");
-				System.out.println("6: ");
-				System.out.println("7: ");
-				System.out.println("8: ");
+				System.out.println("4: Añadir cuenta bancaria");
+				System.out.println("5: Cerrar cuenta bancaria");
+				System.out.println("6: Depositar dinero en la cuenta");
+				System.out.println("7: Retirar dinero");
+				System.out.println("8: Ultimos movimientos");
 				System.out.println("9: Desconexion");
 				
 				Scanner keyboard = new Scanner(System.in);
@@ -220,6 +366,57 @@ public class UPMBank {
 						String newPassword = user.next();
 						
 						changePassword(oldPassword, newPassword);
+						break;
+					case 4:
+						System.out.println("Escriba la cantidad con la que quiere iniciar su cuenta");
+						System.out.println("Ingreso inicial: ");
+						if(user.hasNextDouble()) {
+							double quantity = user.nextDouble();
+							addBankAcc(quantity);
+						}
+						break;
+					case 5:
+						System.out.println("Indique la cuenta que quiere cerrar");
+						System.out.println("IBAN: ");
+						if(user.hasNext()){
+							String IBAN = user.next();
+							closeBankAcc(IBAN);
+						}
+						break;
+					case 6:
+						System.out.println("Indique a que cuenta quiere ingresar dinero");
+						System.out.println("IBAN: ");
+						String IBAN;
+						if(user.hasNext()){
+							IBAN = user.next();
+
+							System.out.println("Indique la cantidad que quiere ingresar");
+							System.out.println("Cantidad: ");
+							double income;
+							if(user.hasNextDouble()){
+								income = user.nextDouble();
+								addIncome(IBAN, income);
+							}
+						}
+						break;
+					case 7:
+						System.out.println("Indique a que cuenta quiere retirar dinero");
+						System.out.println("IBAN: ");
+						String IBAN2;
+						if(user.hasNext()){
+							IBAN2 = user.next();
+
+							System.out.println("Indique la cantidad que quiere retirar");
+							System.out.println("Cantidad: ");
+							double withdraw;
+							if(user.hasNextDouble()){
+								withdraw = user.nextDouble();
+								addWithdraw(IBAN2, withdraw);
+							}
+						}
+						break;
+					case 8:
+						getMyMovement();
 						break;
 					case 9: 
 						logout();

@@ -1,0 +1,38 @@
+<component name="libraryTable">
+  <library name="axis2-1.6">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/version/target/apidocs" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/databinding/client/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/databinding/service/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/faulthandling/client/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/faulthandling/service/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/java_first_jaxws/src/main" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/jaxws-addressbook/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/jaxws-calculator/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/jaxws-dynamic/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/jaxws-interop/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/jaxws-samples/src/main" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/jaxws-version/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/mtom/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/pojo/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/pojoguide/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/pojoguidespring/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/quickstart/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/quickstartadb/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/quickstartaxiom/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/quickstartjibx/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/quickstartxmlbeans/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/servicelifecycle/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/soapwithattachments/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/userguide/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/version/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/yahoojsonsearch/src" />
+      <root url="file://$PROJECT_DIR$/../../../../../../../../axis2-1.6.2/samples/yahoorestsearch/src" />
+    </SOURCES>
+  </library>
+</component>
